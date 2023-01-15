@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/css/style.css">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 3</title>
+</head>
+
+<body>
+    <h1 id="header"></h1>
+    <header>Assignment 3 - Click Below To Retrieve Details</header>
+
+
+    <br>
+    <button id="loadNew">Get Details</button>
+
+    <div id="output"></div>
+
+    <button id="trigger">Get Joke</button>
+
+    <h2 id="footer"></h2>
+    <script type="text/javascript">
+        var header = document.getElementById('header');
+        var footer = document.getElementById('footer');
+        var buttonClick = document.getElementById('loadNew');
+
+
+        buttonClick.addEventListener('click', function() {
+            loadAjax();
+
+        })
+
+        function loadAjax() {
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    header.innerHTML = xhr.responseText;
+                    footer.innerHTML = xhr.responseText;
+                }
+            }
+            xhr.open("GET", "simple.txt", true);
+            xhr.send();
+        }
+    </script>
+    <script type="text/javascript">
+        var joker = document.querySelector('#trigger');
+        joker.addEventListener('click', loadJoke);
+
+        function loadJoke() {
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        var json = JSON.parse(this.responseText);
+                        output.innerHTML = json.value;
+                        console.log(this.responseText);
+                    }
+                }
+            }
+            ajax.open('GET', 'https://api.chucknorris.io/jokes/random', true);
+            ajax.send();
+        }
+    </script>
+</body>
+
+</html>
